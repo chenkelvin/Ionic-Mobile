@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="livia">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>List Directive</title>
+	<link rel="stylesheet" href="ionic/css/ionic.css">
+	<script src="ionic/js/ionic.bundle.js"></script>
+	<style>
+		*{
+			font-family: "微软雅黑";
+		}
+	</style>
+</head>
+<body ng-controller= "myCtrl">
+	<!-- 头部 -->
+	<ion-header-bar class="bar-positive">
+		<!-- 删除按钮 -->
+		<div class="buttons">
+			<button class="button button-icon icon ion-ios-minus-outline" ng-click="data.show = !data.show; data.reorder = false"></button>
+		</div>
+		<h2 class="title">滑动删除</h2>
+		<!-- reorder、重新排序 -->
+		<div class="buttons">
+			<button class="button" ng-click="data.show = false; data.reorder = !data.reorder">排序</button>
+		</div>
+	</ion-header-bar>
+	<!-- 主体 -->
+	<ion-content>
+		<ion-list show-delete="data.show" show-reorder="data.reorder">
+			<ion-item ng-repeat="item in items">
+				编号： {{item.id}}
+				<!-- 删除按钮 -->
+				<ion-delete-button class="ion-minus-circled" ng-click="delete(item)"></ion-delete-button>
+				<!-- 编辑按钮 -->
+				<ion-option-button class="button-assertive" ng-click="edit(item)">编辑</ion-option-button>
+				<!-- 上传按钮 -->
+				<ion-option-button class="button-calm" ng-click="updata(item)">Updata</ion-option-button>
+				<!-- 右边的列表 -->
+				<ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+			</ion-item>
+			
+		</ion-list>
+	</ion-content>
+</body>
+<script>
+	var app = angular.module("livia", ["ionic"]);
+	app.controller("myCtrl", function($scope){
+		// json数组
+		$scope.items = [
+			{id: 1},
+			{id: 2},
+			{id: 3},
+			{id: 4},
+			{id: 5},
+			{id: 6},
+			{id: 7},
+			{id: 1},
+			{id: 2},
+			{id: 1},
+			{id: 2},
+			{id: 1},
+			{id: 2}
+		]
+		// 编辑
+		$scope.edit = function(item){
+			alert("编辑序号："+ item.id);
+		}
+		// 上传
+		$scope.updata = function(item){
+			alert("updata: "+ item.id);
+		}
+		// 删除按钮的函数
+		$scope.delete = function(item){
+			$scope.items.splice($scope.items.indexOf(item), 1);
+		}
+		// 重新排序
+		$scope.moveItem = function(item, fromIndex, toIndex){
+			$scope.items.splice(fromIndex, 1);
+			$scope.items.splice(toIndex, 0, item);
+		}
+	});
+</script>
+</html>
